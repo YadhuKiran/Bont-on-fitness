@@ -1,4 +1,5 @@
 import { FormEvent, ReactNode, useState } from "react";
+import { authSignIn } from "./lib/supabase";
 
 type IconName = "grid" | "calendar" | "dumbbell" | "trend" | "users" | "settings" | "logout" | "bell" | "search" | "arrow" | "play" | "check" | "clock" | "map" | "chevron";
 
@@ -75,7 +76,6 @@ function App() {
 function Login({ onLogin }: { onLogin: () => void }) {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [showPassword, setShowPassword] = useState(false);
-  const submit = (event: FormEvent<HTMLFormElement>) => { event.preventDefault(); onLogin(); };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);

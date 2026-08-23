@@ -12,3 +12,6 @@ export const supabase: SupabaseClient = createClient(supabaseUrl, supabaseAnonKe
 export const authSignIn = (email: string, password: string) => supabase.auth.signInWithPassword({ email, password });
 export const authSignUp = (email: string, password: string) => supabase.auth.signUp({ email, password });
 export const authSignOut = () => supabase.auth.signOut();
+export const getUser = () => supabase.auth.getSession();
+
+export default supabase;
