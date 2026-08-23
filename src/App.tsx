@@ -76,7 +76,80 @@ function Login({ onLogin }: { onLogin: () => void }) {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [showPassword, setShowPassword] = useState(false);
   const submit = (event: FormEvent<HTMLFormElement>) => { event.preventDefault(); onLogin(); };
-  return <div className="auth-page"><div className="auth-brand"><div className="brand-mark large-mark">BT</div><div><div className="brand-name">BON TON</div><div className="brand-subtitle">FITNESS CLUB</div></div></div><div className="auth-layout"><div className="auth-visual"><div className="visual-kicker"><span /> BON TON FITNESS <span /></div><h1>Train with<br /><em>purpose.</em></h1><p>Everything you need to build a body and life you're proud of.</p><div className="visual-stats"><div><strong>05</strong><span>CLUBS ACROSS<br />BENGALURU</span></div><div><strong>01</strong><span>COMMUNITY.<br />YOUR COMMUNITY.</span></div></div><div className="visual-lines" /></div><div className="auth-form-wrap"><div className="auth-form"><div className="auth-heading"><p className="eyebrow">WELCOME BACK</p><h2>{mode === "login" ? "Let's get to work." : "Start your journey."}</h2><p>{mode === "login" ? "Sign in to continue your fitness journey." : "Create your Bon Ton member account."}</p></div><div className="auth-tabs"><button className={mode === "login" ? "active" : ""} onClick={() => setMode("login")}>Email & password</button><button className={mode === "signup" ? "active" : ""} onClick={() => setMode("signup")}>Phone OTP <span>SOON</span></button></div><form onSubmit={submit}><label>Email address<input type="email" required placeholder="you@example.com" /></label><label>Password<div className="password-field"><input type={showPassword ? "text" : "password"} required minLength={6} placeholder="Enter your password" /><button type="button" onClick={() => setShowPassword(!showPassword)}>{showPassword ? "Hide" : "Show"}</button></div></label>{mode === "login" && <div className="form-options"><label className="checkbox-label"><input type="checkbox" /> Remember me</label><button type="button" className="link-button">Forgot password?</button></div>}<button className="button button-lime auth-submit" type="submit">{mode === "login" ? "Sign in to Bon Ton" : "Create account"} <Icon name="arrow" size={17} /></button></form><div className="auth-note"><Icon name="check" size={15} /> Secure member access</div></div></div></div><p className="auth-footer">© 2026 Bon Ton Fitness <span>·</span> HMT Layout, Bengaluru</p></div>;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setError(null);
+    try {
+      const res = await authSignIn(email, password);
+      if ((res as any).error) {
+        setError((res as any).error.message || "Sign-in failed");
+        return;
+      }
+      onLogin();
+    } catch (err: any) {
+      setError(err.message || String(err));
+    }
+  };
+
+  return (
+    <div className="auth-page">
+      <div className="auth-brand">
+        <div className="brand-mark large-mark">BT</div>
+        <div>
+          <div className="brand-name">BON TON</div>
+          <div className="brand-subtitle">FITNESS CLUB</div>
+        </div>
+      </div>
+      <div className="auth-layout">
+        <div className="auth-visual">
+          <div className="visual-kicker"><span /> BON TON FITNESS <span /></div>
+          <h1>Train with<br /><em>purpose.</em></h1>
+          <p>Everything you need to build a body and life you're proud of.</p>
+          <div className="visual-stats">
+            <div><strong>05</strong><span>CLUBS ACROSS<br />BENGALURU</span></div>
+            <div><strong>01</strong><span>COMMUNITY.<br />YOUR COMMUNITY.</span></div>
+          </div>
+          <div className="visual-lines" />
+        </div>
+        <div className="auth-form-wrap">
+          <div className="auth-form">
+            <div className="auth-heading">
+              <p className="eyebrow">WELCOME BACK</p>
+              <h2>{mode === "login" ? "Let's get to work." : "Start your journey."}</h2>
+              <p>{mode === "login" ? "Sign in to continue your fitness journey." : "Create your Bon Ton member account."}</p>
+            </div>
+            <div className="auth-tabs">
+              <button className={mode === "login" ? "active" : ""} onClick={() => setMode("login")}>Email & password</button>
+              <button className={mode === "signup" ? "active" : ""} onClick={() => setMode("signup")}>Phone OTP <span>SOON</span></button>
+            </div>
+            <form onSubmit={submit}>
+              <label>Email address
+                <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required placeholder="you@example.com" />
+              </label>
+              <label>Password
+                <div className="password-field">
+                  <input value={password} onChange={(e) => setPassword(e.target.value)} type={showPassword ? "text" : "password"} required minLength={6} placeholder="Enter your password" />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)}>{showPassword ? "Hide" : "Show"}</button>
+                </div>
+              </label>
+              {mode === "login" && (
+                <div className="form-options">
+                  <label className="checkbox-label"><input type="checkbox" /> Remember me</label>
+                  <button type="button" className="link-button">Forgot password?</button>
+                </div>
+              )}
+              {error && <div className="form-error">{error}</div>}
+              <button className="button button-lime auth-submit" type="submit">{mode === "login" ? "Sign in to Bon Ton" : "Create account"} <Icon name="arrow" size={17} /></button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function StatCard({ label, value, suffix, helper, icon, tone }: { label: string; value: string; suffix: string; helper: string; icon: IconName; tone: "lime" | "dark" | "light" | "warm" }) { return <div className={`stat-card stat-${tone}`}><div className="stat-top"><span>{label}</span><div className="stat-icon"><Icon name={icon} size={17} /></div></div><div className="stat-value">{value}<small>{suffix}</small></div><div className="stat-helper"><span className="helper-dot" />{helper}</div></div>; }
