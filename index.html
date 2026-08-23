@@ -14,6 +14,10 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Debug banner: visible even if CSS isn't loaded -->
+    <div id="debug-banner" style="position:fixed;left:8px;bottom:8px;z-index:9999;background:#fffbcc;color:#111;padding:8px 10px;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.12);font-family:system-ui,sans-serif;font-weight:600;">
+      Bon Ton UI — debug banner (styles should still apply from src/styles.css)
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
