@@ -31,6 +31,16 @@ The production build can be verified with:
 npm run build
 ```
 
+### Optional Express webhook service
+
+The repository also includes an Express webhook service under `server/` for attendance events.
+
+```bash
+cd server
+npm install
+npm run dev
+```
+
 ## Supabase setup
 
 Copy `.env.example` to `.env.local` and set the project values:
