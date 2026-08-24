@@ -86,3 +86,10 @@ When Supabase is not configured, the login screen provides a role selector. Use 
 ## Next implementation step
 
 The next product phase should connect the rendered views to real Supabase queries and subscriptions, then build the Phase 2 recommendation engine. Trainer-assigned plans should take priority, recent muscle-group history and member goals should drive fallback recommendations, and equipment marked for maintenance should be excluded from suggested exercises.
+
+
+## Permanent deployment
+
+The repository includes `.github/workflows/deploy-pages.yml`, which builds and deploys the site to GitHub Pages on every push to `main`. The Vite production build is configured for the project URL `https://yadhukiran.github.io/Bont-on-fitness/`.
+
+One repository-owner action is required before the first deployment: open **Settings → Pages**, set **Source** to **GitHub Actions**, and save. GitHub currently prevents the connected automation token from enabling Pages through the API, so this setting must be switched on once in the repository UI. After it is enabled, re-run the `Deploy Bon Ton Fitness to GitHub Pages` workflow or push another commit; subsequent pushes deploy automatically.
